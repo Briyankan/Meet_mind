@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MeetMind AI — turn meeting recordings into clear summaries, organized notes, and actionable insights.">
+  <title>MeetMind AI — Turn Every Meeting Into Meaningful Progress</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icon-180.png') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body class="mm">
+
+  <!-- ===== Nav ===== -->
+  <header class="mm-nav" id="mm-nav">
+    <div class="mm-container mm-nav-inner">
+      <a class="mm-logo" href="#top">
+        <span class="mm-logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="6" r="2.4" fill="white"/>
+            <circle cx="6" cy="16" r="2.4" fill="white" fill-opacity="0.85"/>
+            <circle cx="18" cy="16" r="2.4" fill="white" fill-opacity="0.85"/>
+            <path d="M12 8.4V13M12 13L6 16M12 13L18 16" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>MeetMind AI</span>
+      </a>
+
+      <nav class="mm-nav-links" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#benefits">Benefits</a>
+      </nav>
+
+      <div class="mm-nav-actions">
+        <a class="mm-btn mm-btn-ghost" href="#how-it-works">See How It Works</a>
+        <a class="mm-btn mm-btn-primary" href="{{ url_for('index') }}">Get Started</a>
+        <button type="button" class="mm-nav-toggle" id="mm-nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mm-mobile-menu">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="mm-mobile-menu" id="mm-mobile-menu">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#benefits">Benefits</a>
+      <a class="mm-btn mm-btn-primary mm-btn-block" href="{{ url_for('index') }}">Get Started</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===== Hero ===== -->
+    <section class="mm-hero mm-mesh-section">
+      <div class="mm-mesh" aria-hidden="true"></div>
+      <div class="mm-noise" aria-hidden="true"></div>
+      <div class="mm-container mm-hero-inner">
+        <div class="mm-hero-copy">
+          <span class="mm-eyebrow"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> AI-Powered Meeting Assistant</span>
+          <h1>Turn Every Meeting Into <span class="mm-grad">Meaningful Progress.</span></h1>
+          <p class="mm-sub">MeetMind AI transforms your meeting recordings into clear summaries, organized notes, and actionable insights — so you can focus on the conversation, not the paperwork.</p>
+          <div class="mm-hero-ctas">
+            <a class="mm-btn mm-btn-primary mm-btn-lg" href="{{ url_for('index') }}">
+              Get Started — It's Simple <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            <a class="mm-btn mm-btn-ghost mm-btn-lg" href="#how-it-works">
+              <i class="fa-solid fa-play" aria-hidden="true"></i> See How It Works
+            </a>
+          </div>
+          <p class="mm-hero-note">No credit card required. Your files are processed securely and never stored permanently.</p>
+        </div>
+
+        <div class="mm-mockup-wrap mm-reveal">
+          <span class="mm-preview-badge">Sample preview — not live data</span>
+          <div class="mm-browser-frame">
+            <div class="mm-browser-bar">
+              <span class="mm-browser-dot"></span><span class="mm-browser-dot"></span><span class="mm-browser-dot"></span>
+            </div>
+            <img
+              src="{{ url_for('static', filename='images/screenshots/home-page.png') }}"
+              alt="MeetMind AI upload interface — drag and drop an audio file or paste a transcript"
+              class="mm-screenshot"
+              loading="eager"
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Trust / value section ===== -->
+    <section class="mm-section" id="benefits">
+      <div class="mm-container">
+        <div class="mm-section-head mm-reveal">
+          <span class="mm-eyebrow">Why MeetMind AI</span>
+          <h2>Less writing. More doing.</h2>
+          <p>MeetMind AI handles the busywork after every meeting so your team can move straight to action.</p>
+        </div>
+        <div class="mm-trust-grid">
+          <div class="mm-trust-item mm-reveal">
+            <i class="fa-solid fa-hourglass-half" aria-hidden="true"></i>
+            <h3>Spend less time writing meeting notes</h3>
+            <p>Let MeetMind AI turn a recording or transcript into a structured summary in minutes.</p>
+          </div>
+          <div class="mm-trust-item mm-reveal">
+            <i class="fa-solid fa-folder-tree" aria-hidden="true"></i>
+            <h3>Keep important discussions organized</h3>
+            <p>Overview, discussion points, and decisions are separated clearly so nothing gets lost.</p>
+          </div>
+          <div class="mm-trust-item mm-reveal">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <h3>Turn conversations into useful next steps</h3>
+            <p>Action items are pulled out on their own, ready to hand off or track.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="mm-section mm-mesh-section" id="features" style="background: var(--bg-elevated);">
+      <div class="mm-mesh" aria-hidden="true"></div>
+      <div class="mm-noise" aria-hidden="true"></div>
+      <div class="mm-container">
+        <div class="mm-section-head mm-reveal">
+          <span class="mm-eyebrow">Features</span>
+          <h2>Everything you need after a meeting ends</h2>
+          <p>Built around the way MeetMind AI actually works today — no invented functionality.</p>
+        </div>
+        <div class="mm-features-grid">
+          <div class="mm-feature-card mm-reveal">
+            <div class="mm-feature-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></div>
+            <h3>AI-Powered Summaries</h3>
+            <p>Turn long meeting recordings into concise, easy-to-understand summaries.</p>
+          </div>
+          <div class="mm-feature-card mm-reveal">
+            <div class="mm-feature-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div>
+            <h3>Smart Meeting Notes</h3>
+            <p>Organize important discussions into clear and structured notes.</p>
+          </div>
+          <div class="mm-feature-card mm-reveal">
+            <div class="mm-feature-icon"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></div>
+            <h3>Actionable Insights</h3>
+            <p>Identify key decisions and next steps from your meetings, where supported by the application.</p>
+          </div>
+          <div class="mm-feature-card mm-reveal">
+            <div class="mm-feature-icon"><i class="fa-solid fa-microphone-lines" aria-hidden="true"></i></div>
+            <h3>Audio-to-Text</h3>
+            <p>Convert supported meeting recordings (MP3, WAV, M4A) into text using the built-in transcription workflow.</p>
+          </div>
+          <div class="mm-feature-card mm-reveal">
+            <div class="mm-feature-icon"><i class="fa-solid fa-folder-open" aria-hidden="true"></i></div>
+            <h3>Easy Access to Your Notes</h3>
+            <p>Keep your generated meeting notes accessible, with PDF and TXT export built in.</p>
+          </div>
+          <div class="mm-feature-card mm-reveal">
+            <div class="mm-feature-icon"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></div>
+            <h3>Simple Workflow</h3>
+            <p>Upload your recording, let MeetMind AI process it, and review your results.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== How It Works ===== -->
+    <section class="mm-section mm-mesh-section" id="how-it-works">
+      <div class="mm-mesh" aria-hidden="true"></div>
+      <div class="mm-noise" aria-hidden="true"></div>
+      <div class="mm-container">
+        <div class="mm-section-head mm-reveal">
+          <span class="mm-eyebrow">How It Works</span>
+          <h2>Three simple steps</h2>
+          <p>From raw recording to organized notes, without the manual write-up.</p>
+        </div>
+        <div class="mm-steps">
+          <div class="mm-step mm-reveal">
+            <div class="mm-step-num">1</div>
+            <h3><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>&nbsp; Upload</h3>
+            <p>Upload your meeting recording, or paste a transcript, through the existing upload interface.</p>
+          </div>
+          <div class="mm-step mm-reveal">
+            <div class="mm-step-num">2</div>
+            <h3>Let AI Process It</h3>
+            <p>MeetMind AI transcribes and summarizes it using the existing processing workflow.</p>
+          </div>
+          <div class="mm-step mm-reveal">
+            <div class="mm-step-num">3</div>
+            <h3>Review Your Notes</h3>
+            <p>Read your generated summary, copy sections, or export it as PDF or TXT.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Product preview ===== -->
+    <section class="mm-section mm-preview-section mm-mesh-section" style="background: var(--bg-elevated);">
+      <div class="mm-mesh" aria-hidden="true"></div>
+      <div class="mm-noise" aria-hidden="true"></div>
+      <div class="mm-container">
+        <div class="mm-section-head mm-reveal">
+          <span class="mm-eyebrow">Product Preview</span>
+          <h2>A clean, organized results view</h2>
+          <p>This preview mirrors the layout of the real results page inside the app.</p>
+        </div>
+        <div class="mm-mockup-wrap mm-reveal">
+          <span class="mm-preview-badge">Sample preview — not live data</span>
+          <div class="mm-browser-frame">
+            <div class="mm-browser-bar">
+              <span class="mm-browser-dot"></span><span class="mm-browser-dot"></span><span class="mm-browser-dot"></span>
+            </div>
+            <img
+              src="{{ url_for('static', filename='images/screenshots/results-page.png') }}"
+              alt="MeetMind AI results page showing a generated meeting summary with overview, discussion points, key decisions, and action items"
+              class="mm-screenshot"
+              loading="lazy"
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA banner ===== -->
+    <section class="mm-section">
+      <div class="mm-container">
+        <div class="mm-cta-banner mm-reveal">
+          <h2>Ready to turn your next meeting into progress?</h2>
+          <p>Upload a recording or paste a transcript — no account setup required to try it.</p>
+          <a class="mm-btn mm-btn-primary mm-btn-lg" href="{{ url_for('index') }}">
+            Get Started — It's Simple <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mm-footer">
+    <div class="mm-container mm-footer-inner">
+      <div class="mm-logo">
+        <span class="mm-logo-mark" aria-hidden="true" style="width:28px;height:28px;border-radius:7px;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:15px;height:15px;">
+            <circle cx="12" cy="6" r="2.4" fill="white"/>
+            <circle cx="6" cy="16" r="2.4" fill="white" fill-opacity="0.85"/>
+            <circle cx="18" cy="16" r="2.4" fill="white" fill-opacity="0.85"/>
+            <path d="M12 8.4V13M12 13L6 16M12 13L18 16" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span style="font-size:15px;">MeetMind AI</span>
+      </div>
+      <nav class="mm-footer-links" aria-label="Footer">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('privacy_page') }}">Privacy</a>
+        <a href="{{ url_for('contact_page') }}">Contact</a>
+      </nav>
+      <p class="mm-footer-copy">&copy; {{ current_year }} MeetMind AI</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/landing.js') }}" defer></script>
+</body>
+</html>

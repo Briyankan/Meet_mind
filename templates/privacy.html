@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Privacy — MeetMind AI{% endblock %}
+{% block body_class %}page-static{% endblock %}
+
+{% block content %}
+<div class="container-page static-page">
+  <article class="static-card">
+    <h1>Privacy Policy</h1>
+    <p class="lead">Your meeting data stays private, and permanent only if you choose it to be.</p>
+    <ul>
+      <li><strong>Without an account:</strong> Summaries are stored only in your browser session and disappear when it ends.</li>
+      <li><strong>With an account:</strong> Your summaries are saved to a database tied to your login, so you can come back and access them later. Only you can see them.</li>
+      <li><strong>Temporary files:</strong> Uploaded audio is deleted automatically after 60 minutes, regardless of login status.</li>
+      <li><strong>Gemini processing:</strong> Audio and transcripts are sent to Google Gemini using the server-side API key.</li>
+      <li><strong>API key security:</strong> The <code>GEMINI_API_KEY</code> lives in <code>.env</code> on the server and is never exposed to the browser.</li>
+      <li><strong>Password security:</strong> Passwords are hashed and never stored in plain text.</li>
+      <li><strong>Exports:</strong> PDF/TXT files in <code>exports/</code> are removed on the same 60-minute retention policy.</li>
+    </ul>
+    <a href="{{ url_for('index') }}" class="btn btn-submit">Back to Home</a>
+  </article>
+</div>
+{% endblock %}

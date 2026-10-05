@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}MeetMind AI{% endblock %}
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+<div class="container-page home-page">
+  {% if api_health and not api_health.ready %}
+  <div class="alert alert-warning mx-auto mb-4" style="max-width: 900px;" role="alert">
+    <strong>Gemini API key required.</strong> Add <code>GEMINI_API_KEY</code> to <code>.env</code>.
+    <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Get a key</a>
+  </div>
+  {% endif %}
+
+  <div class="home-cards">
+    <!-- Upload Audio -->
+    <article class="home-card" aria-labelledby="audio-card-title">
+      <h2 id="audio-card-title" class="home-card-title">Upload Audio File</h2>
+      <form id="audio-upload-form" action="{{ url_for('upload_audio_form') }}" method="post" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div
+          id="drop-zone"
+          class="drop-zone"
+          role="button"
+          tabindex="0"
+          aria-label="Drag and drop or click to browse"
+        >
+          <i class="fa-solid fa-cloud-arrow-up drop-zone-icon" aria-hidden="true"></i>
+          <p class="drop-zone-text">Drag and drop or click to browse</p>
+          <p class="drop-zone-meta">Supported formats: MP3, WAV, M4A (max 25MB)</p>
+          <p id="selected-file-name" class="selected-file-name" aria-live="polite"></p>
+        </div>
+        <input type="file" id="audio-input" name="audio" accept=".mp3,.wav,.m4a" class="visually-hidden">
+        <button type="button" class="btn btn-browse w-100" id="browse-btn">Browse Files</button>
+        <button type="submit" class="btn btn-submit w-100 mt-2" id="upload-submit-btn" disabled>Submit</button>
+      </form>
+    </article>
+
+    <!-- Text Transcript -->
+    <article class="home-card" aria-labelledby="transcript-card-title">
+      <h2 id="transcript-card-title" class="home-card-title">Enter Text Transcript</h2>
+      <form id="transcript-form" action="{{ url_for('submit_transcript_form') }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="transcript-wrap">
+          <textarea
+            id="transcript-input"
+            name="transcript"
+            class="transcript-input"
+            placeholder="Paste your meeting transcript here..."
+            aria-describedby="char-counter"
+            minlength="50"
+            maxlength="50000"
+            required
+          ></textarea>
+          <span id="char-counter" class="char-counter" aria-live="polite">0 / 50000</span>
+        </div>
+        <button type="submit" class="btn btn-submit w-100 mt-3" id="transcript-submit-btn">Submit</button>
+      </form>
+    </article>
+  </div>
+
+  <aside class="privacy-card-home" aria-labelledby="privacy-home-title">
+    <h2 id="privacy-home-title" class="visually-hidden">Privacy</h2>
+    <p class="mb-0">
+      <i class="fa-solid fa-shield-halved me-2" aria-hidden="true"></i>
+      <strong>Privacy note:</strong> Audio and transcripts are processed via Google Gemini. Files are stored temporarily and auto-deleted after 60 minutes. Summaries stay only in your session unless you create an account.
+      <a href="{{ url_for('privacy_page') }}">Learn more</a>
+    </p>
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>window.API_HEALTH = {{ api_health | tojson }};</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Processing — MeetMind AI{% endblock %}
+{% block body_class %}page-processing{% endblock %}
+
+{% block content %}
+<div class="container-page processing-page">
+  <div class="processing-panel">
+    <h1 class="visually-hidden">Processing your meeting file</h1>
+
+    <ol class="stepper list-unstyled mb-0" id="step-list" aria-label="Processing steps">
+      <li class="stepper-item step-done" data-step="1" id="step-upload">
+        <span class="stepper-badge step-badge-done">STEP 1 COMPLETE</span>
+        <div class="stepper-row">
+          <span class="stepper-icon step-icon-done"><i class="fa-solid fa-check"></i></span>
+          <div>
+            <span class="stepper-label">Upload complete</span>
+          </div>
+        </div>
+      </li>
+      <li class="stepper-item step-active" data-step="2" id="step-transcribe">
+        <span class="stepper-badge step-badge-active">STEP 2 ACTIVE</span>
+        <div class="stepper-row">
+          <span class="stepper-icon step-icon-active"><i class="fa-solid fa-spinner fa-spin"></i></span>
+          <div>
+            <span class="stepper-label">Transcribing audio...</span>
+            <span class="stepper-sub">This may take up to 2 minutes</span>
+          </div>
+        </div>
+      </li>
+      <li class="stepper-item step-pending" data-step="3" id="step-summary">
+        <span class="stepper-badge step-badge-pending">STEP 3 PENDING</span>
+        <div class="stepper-row">
+          <span class="stepper-icon step-icon-pending"></span>
+          <div>
+            <span class="stepper-label">Generating summary</span>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="progress-block mt-4">
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45" id="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar" style="width: 15%"></div>
+      </div>
+      <p class="progress-status" id="processing-message" aria-live="polite">Processing your meeting file...</p>
+      <p class="progress-percent text-end" id="progress-percent">15%</p>
+    </div>
+
+    <div id="processing-error" class="alert alert-danger mt-3 d-none" role="alert"></div>
+
+    <button type="button" class="btn btn-cancel w-100 mt-4" id="cancel-btn">Cancel</button>
+    <p class="processing-warning"><i class="fa-solid fa-triangle-exclamation me-1" aria-hidden="true"></i> Please do not close your browser while processing</p>
+
+    <a href="{{ url_for('index') }}" class="btn btn-secondary w-100 mt-2 d-none" id="back-home-btn">Back to Home</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>window.PROCESSING_MODE = "audio";</script>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — MeetMind AI{% endblock %}
+{% block body_class %}page-dashboard{% endblock %}
+
+{% block content %}
+<div class="container-page dashboard-page">
+  <header class="dashboard-header">
+    <h1 class="dashboard-title">Welcome back{{ ', ' + current_user.email.split('@')[0] if current_user.email else '' }}</h1>
+    <p class="dashboard-subtitle">
+      {% if stats.total_count %}
+        Here's how your summaries are shaping up.
+      {% else %}
+        Generate your first summary and your stats will show up here.
+      {% endif %}
+    </p>
+  </header>
+
+  <div class="stat-grid">
+    <div class="stat-tile">
+      <span class="stat-tile-value">{{ stats.total_count }}</span>
+      <span class="stat-tile-label">Total Summaries</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile-value">{{ stats.audio_count }}</span>
+      <span class="stat-tile-label"><i class="fa-solid fa-microphone-lines" aria-hidden="true"></i> Audio</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile-value">{{ stats.text_count }}</span>
+      <span class="stat-tile-label"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Text</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile-value">
+        {% if stats.avg_rating %}{{ stats.avg_rating }}<i class="fa-solid fa-star stat-star" aria-hidden="true"></i>{% else %}—{% endif %}
+      </span>
+      <span class="stat-tile-label">{{ stats.review_count }} review{{ 's' if stats.review_count != 1 else '' }}</span>
+    </div>
+  </div>
+
+  <div class="dashboard-panels">
+    <div class="activity-panel">
+      <h2 class="col-heading mb-3">Activity — Last 7 Days</h2>
+      <div class="activity-chart" role="img" aria-label="Summaries generated per day over the last 7 days">
+        {% for day in activity %}
+        <div class="activity-bar-col">
+          <span class="activity-bar-count">{{ day.count if day.count else '' }}</span>
+          <div class="activity-bar-track">
+            <div class="activity-bar-fill" style="height: {{ day.pct if day.count else 4 }}%;"></div>
+          </div>
+          <span class="activity-bar-label">{{ day.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="dashboard-quick-actions">
+      <a href="{{ url_for('index') }}#audio-upload-form" class="home-card dashboard-action-card">
+        <div class="dashboard-action-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></div>
+        <h2 class="home-card-title">Upload Audio</h2>
+        <p class="dashboard-action-text">Transcribe and summarize a meeting recording.</p>
+      </a>
+      <a href="{{ url_for('index') }}#transcript-form" class="home-card dashboard-action-card">
+        <div class="dashboard-action-icon"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></div>
+        <h2 class="home-card-title">Paste Transcript</h2>
+        <p class="dashboard-action-text">Summarize text you already have.</p>
+      </a>
+    </div>
+  </div>
+
+  <div class="dashboard-recent">
+    <div class="dashboard-recent-head">
+      <h2 class="col-heading mb-0">Recent Summaries</h2>
+      {% if items %}
+      <a href="{{ url_for('history_page') }}" class="btn-link-style">View all</a>
+      {% endif %}
+    </div>
+
+    {% if items %}
+    <ul class="history-list list-unstyled">
+      {% for item in items %}
+      <li class="history-item">
+        <div class="history-item-icon" aria-hidden="true">
+          <i class="fa-solid {{ 'fa-microphone-lines' if item.source == 'audio' else 'fa-file-lines' }}"></i>
+        </div>
+        <div class="history-item-body">
+          <p class="history-item-meta">
+            <span class="history-item-source">{{ 'Audio recording' if item.source == 'audio' else 'Text transcript' }}</span>
+            <span class="history-item-dot" aria-hidden="true">&middot;</span>
+            <span>{{ item.generated_at }}</span>
+          </p>
+          <p class="history-item-overview">{{ item.summary.overview }}</p>
+        </div>
+        <div class="history-item-actions">
+          <a href="{{ url_for('view_history_entry', entry_id=item.id) }}" class="btn btn-browse btn-sm">View</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="history-empty">
+      <i class="fa-solid fa-clock-rotate-left history-empty-icon" aria-hidden="true"></i>
+      <p class="history-empty-title">No summaries yet</p>
+      <p class="history-empty-text">Upload a recording or paste a transcript to get started.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

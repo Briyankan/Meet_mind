@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MeetMind AI — turn meeting recordings into clear summaries, organized notes, and actionable insights.">
+  <title>{% block title %}MeetMind AI{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icon-180.png') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a href="#main-content" class="visually-hidden-focusable skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a class="site-logo" href="{{ url_for('dashboard_page') if current_user.is_authenticated else url_for('index') }}">
+        <span class="logo-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="19" height="19">
+            <circle cx="12" cy="6" r="2.4" fill="white"/>
+            <circle cx="6" cy="16" r="2.4" fill="white" fill-opacity="0.85"/>
+            <circle cx="18" cy="16" r="2.4" fill="white" fill-opacity="0.85"/>
+            <path d="M12 8.4V13M12 13L6 16M12 13L18 16" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="logo-text">MeetMind AI</span>
+      </a>
+      <nav class="header-nav d-none d-md-flex" aria-label="Site sections">
+        <a href="{{ url_for('dashboard_page') if current_user.is_authenticated else url_for('index') }}">Home</a>
+        <a href="{{ url_for('history_page') }}">History</a>
+        <a href="{{ url_for('privacy_page') }}">Privacy</a>
+        <a href="{{ url_for('contact_page') }}">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <span id="api-status-badge" class="api-badge d-none d-lg-inline" role="status" aria-live="polite">
+          <i class="fa-solid fa-circle-notch fa-spin d-none" id="status-spinner" aria-hidden="true"></i>
+          <span id="api-status-text"></span>
+        </span>
+        <button type="button" class="btn btn-theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <i class="fa-solid fa-moon" id="theme-icon" aria-hidden="true"></i>
+        </button>
+        {% if current_user.is_authenticated %}
+          <span class="auth-email d-none d-lg-inline">{{ current_user.email }}</span>
+          <form action="{{ url_for('logout_page') }}" method="post" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-auth-nav">Log Out</button>
+          </form>
+        {% else %}
+          <a class="btn btn-auth-nav" href="{{ url_for('login_page') }}">Log In</a>
+          <a class="btn btn-auth-nav btn-auth-nav-primary d-none d-sm-inline-flex" href="{{ url_for('register_page') }}">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3" aria-live="polite" aria-atomic="true"></div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container-page" role="alert">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main id="main-content" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="{{ url_for('dashboard_page') if current_user.is_authenticated else url_for('index') }}">Home</a>
+        <a href="{{ url_for('history_page') }}">History</a>
+        <a href="{{ url_for('privacy_page') }}">Privacy</a>
+        <a href="{{ url_for('contact_page') }}">Contact</a>
+        {% if current_user.is_authenticated %}
+          <form action="{{ url_for('logout_page') }}" method="post" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn-link-style p-0">Log Out</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('login_page') }}">Log In</a>
+          <a href="{{ url_for('register_page') }}">Sign Up</a>
+        {% endif %}
+      </nav>
+      <p class="footer-privacy mb-1">
+        <strong>Privacy notice:</strong> Your files are deleted after processing.
+      </p>
+      <p class="footer-copy mb-0">&copy; {{ current_year }} MeetMind AI</p>
+      <span class="footer-ai-icon" aria-hidden="true" title="Powered by Gemini"><i class="fa-solid fa-sparkles"></i></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

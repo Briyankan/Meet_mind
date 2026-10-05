@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Meeting Summary — MeetMind AI{% endblock %}
+{% block body_class %}page-results{% endblock %}
+
+{% block content %}
+<div class="results-layout">
+  <nav class="results-col results-col-left" aria-label="Table of contents">
+    <h2 class="col-heading">Contents</h2>
+    <ul class="contents-list list-unstyled">
+      <li><a href="#section-overview" class="contents-link active">Overview</a></li>
+      <li><a href="#section-discussion" class="contents-link">Discussion Points</a></li>
+      <li><a href="#section-decisions" class="contents-link">Key Decisions</a></li>
+      <li><a href="#section-actions" class="contents-link">Action Items</a></li>
+      <li><a href="#section-conclusion" class="contents-link">Final Conclusion</a></li>
+      {% if transcript_preview %}
+      <li><a href="#section-transcript" class="contents-link">Transcript</a></li>
+      {% endif %}
+    </ul>
+    <hr class="contents-divider">
+    <h3 class="col-subheading">Export</h3>
+    <ul class="export-links list-unstyled">
+      <li><button type="button" class="contents-link btn-link-style" id="copy-full-summary">Copy</button></li>
+      <li><button type="button" class="contents-link btn-link-style" id="share-summary">Share</button></li>
+    </ul>
+  </nav>
+
+  <article class="results-col results-col-center">
+    <header class="summary-page-header">
+      <h1 class="summary-page-title">Meeting Summary</h1>
+      {% if generated_at %}
+      <p class="summary-meta"><i class="fa-regular fa-clock me-1" aria-hidden="true"></i> Generated {{ generated_at }}</p>
+      {% endif %}
+    </header>
+
+    <section id="section-overview" class="summary-block" tabindex="-1">
+      <div class="summary-block-head">
+        <h2 class="summary-block-title">Overview</h2>
+        <button type="button" class="btn-copy-section" data-copy-target="overview-text" aria-label="Copy overview">
+          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
+        </button>
+      </div>
+      <p id="overview-text" class="summary-text">{{ summary.overview }}</p>
+    </section>
+
+    <section id="section-discussion" class="summary-block" tabindex="-1">
+      <div class="summary-block-head">
+        <h2 class="summary-block-title">Discussion Points</h2>
+        <button type="button" class="btn-copy-section" data-copy-target="discussion-list" aria-label="Copy discussion points">
+          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
+        </button>
+      </div>
+      <ul id="discussion-list" class="summary-bullets">
+        {% for point in summary.discussion_points %}
+        <li>{{ point }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section id="section-decisions" class="summary-block summary-block-highlight" tabindex="-1">
+      <div class="summary-block-head">
+        <h2 class="summary-block-title">Key Decisions</h2>
+        <button type="button" class="btn-copy-section" data-copy-target="decisions-list" aria-label="Copy decisions">
+          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
+        </button>
+      </div>
+      <ol id="decisions-list" class="summary-numbered">
+        {% for decision in summary.decisions %}
+        <li>{{ decision }}</li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section id="section-actions" class="summary-block" tabindex="-1">
+      <div class="summary-block-head">
+        <h2 class="summary-block-title">Action Items</h2>
+        <button type="button" class="btn-copy-section" data-copy-target="actions-list" aria-label="Copy action items">
+          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
+        </button>
+      </div>
+      <ul id="actions-list" class="action-checklist">
+        {% for action in summary.action_items %}
+        <li>
+          <span class="action-check" aria-hidden="true"><i class="fa-regular fa-square"></i></span>
+          <span>{{ action }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section id="section-conclusion" class="summary-block" tabindex="-1">
+      <div class="summary-block-head">
+        <h2 class="summary-block-title">Final Conclusion</h2>
+        <button type="button" class="btn-copy-section" data-copy-target="conclusion-text" aria-label="Copy conclusion">
+          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
+        </button>
+      </div>
+      <p id="conclusion-text" class="summary-text">{{ summary.final_conclusion }}</p>
+    </section>
+
+    {% if transcript_preview %}
+    <section id="section-transcript" class="summary-block" tabindex="-1">
+      <div class="summary-block-head">
+        <h2 class="summary-block-title">Transcript Preview</h2>
+      </div>
+      <pre class="transcript-preview" id="transcript-preview-text">{{ transcript_preview }}</pre>
+    </section>
+    {% endif %}
+  </article>
+
+  <aside class="results-col results-col-right" aria-label="Actions">
+    <div class="download-card">
+      <a href="{{ url_for('api_export', export_type='pdf') }}" class="btn btn-download-primary w-100" id="download-pdf">
+        <i class="fa-solid fa-file-pdf me-1" aria-hidden="true"></i> Download as PDF
+      </a>
+      <a href="{{ url_for('api_export', export_type='txt') }}" class="btn btn-download-outline w-100 mt-2" id="download-txt">
+        <i class="fa-solid fa-file-lines me-1" aria-hidden="true"></i> Download as TXT
+      </a>
+      <form action="{{ url_for('new_summary') }}" method="post" class="mt-2">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-new-summary w-100">
+          <i class="fa-solid fa-plus me-1" aria-hidden="true"></i> New Summary
+        </button>
+      </form>
+    </div>
+
+    <div class="feedback-card mt-4" id="feedback-card">
+      <p class="feedback-question mb-2">Rate this summary</p>
+      <div class="star-rating" id="star-rating" role="radiogroup" aria-label="Rating out of 5 stars">
+        <button type="button" class="star-btn" data-value="1" aria-label="1 star"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="star-btn" data-value="2" aria-label="2 stars"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="star-btn" data-value="3" aria-label="3 stars"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="star-btn" data-value="4" aria-label="4 stars"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="star-btn" data-value="5" aria-label="5 stars"><i class="fa-solid fa-star"></i></button>
+      </div>
+      <textarea id="review-comment" class="form-control review-textarea mt-2" rows="2" maxlength="2000" placeholder="Write a review (optional)"></textarea>
+      <button type="button" class="btn btn-submit btn-sm w-100 mt-2" id="review-submit-btn" disabled>Submit Review</button>
+      <p id="feedback-thanks" class="small text-success mt-2 d-none" role="status">Thanks for your review!</p>
+    </div>
+  </aside>
+</div>
+{% endblock %}

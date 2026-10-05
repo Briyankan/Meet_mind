@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}History — MeetMind AI{% endblock %}
+{% block body_class %}page-history{% endblock %}
+
+{% block content %}
+<div class="container-page history-page">
+  <header class="history-header">
+    <h1 class="history-title">Summary History</h1>
+    {% if current_user.is_authenticated %}
+    <p class="history-subtitle">Saved permanently to your account — accessible any time you log in.</p>
+    {% else %}
+    <p class="history-subtitle">Summaries generated in this browser session. Cleared when the server restarts —
+      <a href="{{ url_for('register_page') }}">create an account</a> to keep them permanently.</p>
+    {% endif %}
+  </header>
+
+  {% if items %}
+  <ul class="history-list list-unstyled">
+    {% for item in items %}
+    <li class="history-item">
+      <div class="history-item-icon" aria-hidden="true">
+        <i class="fa-solid {{ 'fa-microphone-lines' if item.source == 'audio' else 'fa-file-lines' }}"></i>
+      </div>
+      <div class="history-item-body">
+        <p class="history-item-meta">
+          <span class="history-item-source">{{ 'Audio recording' if item.source == 'audio' else 'Text transcript' }}</span>
+          <span class="history-item-dot" aria-hidden="true">&middot;</span>
+          <span>{{ item.generated_at }}</span>
+        </p>
+        <p class="history-item-overview">{{ item.summary.overview }}</p>
+      </div>
+      <div class="history-item-actions">
+        <a href="{{ url_for('view_history_entry', entry_id=item.id) }}" class="btn btn-browse btn-sm">View</a>
+        <form action="{{ url_for('delete_history_entry', entry_id=item.id) }}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-history-delete btn-sm" aria-label="Delete this summary">
+            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+          </button>
+        </form>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="history-empty">
+    <i class="fa-solid fa-clock-rotate-left history-empty-icon" aria-hidden="true"></i>
+    <p class="history-empty-title">No summaries yet</p>
+    <p class="history-empty-text">Generate your first meeting summary and it will show up here.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-submit">Get Started</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
